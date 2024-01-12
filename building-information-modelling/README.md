@@ -5,7 +5,7 @@
 > Before the completion of upgrade, this tutorial serves as the INTENDED USAGE for COMPAS IFC with COMPAS 2.0.
 > If you wish to use COMPAS IFC at its current state, please refer to the [COMPAS IFC documentation](https://compas.dev/compas_ifc).
 
-Creating custom computational workflows for BIM can be challenging, because most commercial BIM applications are close-sourced and not designed to be extended. It is also not easy to perform data-exchange between BIM applications like Revit and CAD softwares such as Rhino or Analysis tools like FEA softwares. COMPAS provides a set of tools for working with BIM data in a transparent and interoperable way through IFC format, allowing users to programatically extract information, perform analysis on, modify and create BIM models in a unified manner across multiple plaforms.
+Creating custom computational workflows for BIM can be challenging, because most commercial BIM applications are close-sourced and not designed to be extended. It is also not easy to perform data-exchange between BIM applications like Revit and CAD softwares such as Rhino or analysis tools like FEA softwares. COMPAS provides a set of tools for working with BIM data in a transparent and interoperable way through IFC format, allowing users to programatically extract information, perform analysis on, modify and create BIM models in a unified manner across multiple plaforms.
 
 This tutorial will give an example of using COMPAS to load a BIM model of a simple house, replace its wall with a parametric one generated with Rhino Grasshopper and then export again as a valid IFC file.
 
