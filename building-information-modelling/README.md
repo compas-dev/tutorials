@@ -7,13 +7,13 @@
 
 Creating custom computational workflows for BIM can be challenging, because most commercial BIM applications are close-sourced and not designed to be extended. It is also not easy to perform data-exchange between BIM applications like Revit and CAD softwares such as Rhino or Analysis tools like FEA softwares. COMPAS provides a set of tools for working with BIM data in a transparent and interoperable way through IFC format, allowing users to programatically extract information, perform analysis on, modify and create BIM models in a unified manner across multiple plaforms.
 
-This tutorial will give an example of using COMPAS to load a BIM model of a simple house, replace its wall with a parametric one with custom metadata and then export again as a valid IFC file.
+This tutorial will give an example of using COMPAS to load a BIM model of a simple house, replace its wall with a parametric one generated with Rhino Grasshopper and then export again as a valid IFC file.
 
 (IMAGE PREVIEW OF THE FINAL MODEL)
 
 ## Setup
 
-Create a new environment with BIM related packages in COMPAS ecosystem. Where `bim` is the name of the environment, `compas` is the COMPAS core library, `compas_ifc` is a package for interacting IFC files, a widely used digital format for BIM applications, and `compas_viewer` is a package of COMPAS's stand-alone viewer.
+Create a new environment with BIM related packages in COMPAS ecosystem. `bim` is the name of the environment, `compas` is the COMPAS core library, `compas_ifc` is a package for interacting with IFC files, a widely used digital format for BIM applications, and `compas_viewer` is a package of COMPAS's stand-alone viewer.
 ```bash
 conda create -n bim compas compas_ifc compas_viewer
 ```
@@ -23,7 +23,7 @@ Alternatively, you can create the environment from the provided `environment.yml
 conda env create -f environment.yml
 ```
 
-Activate the environment install COMPAS packages to Rhino.
+Activate the environment and install COMPAS packages to Rhino.
 ```bash
 conda activate bim
 python -m compas_rhino.install -v 8.0
@@ -46,7 +46,7 @@ python
 ## Open IFC file of existing BIM model with stand-alone viewer
 IFC is a data-exchange format for BIM, it supported by most majority of BIM applications. We provide a [simple_house.ifc]() as the start point of this tutorial.
 
-The `compas_ifc` package provides a stand-alone viewer. It can be used conveniently to inspect IFC file contents.
+The `compas_ifc` package provides a stand-alone viewer. It can be used to conveniently inspect IFC file contents.
 
 ```
 >>> from compas_ifc import IFCModel
@@ -66,7 +66,7 @@ Visualize the model in a viewer.
 (IMAGE FOR VIEWER SHOWING THE INITIAL MODEL)
 
 ## Manipulate the BIM model with COMPAS in Rhino
-Through `compas_rhino`, the BIM model can also be loaded into Rhino, where it can be integrated with new components come directly from COMPAS or native Rhino geometries.
+Through COMPAS, the BIM model can also be loaded into Rhino, where it can be integrated with new components directly from COMPAS or native Rhino geometries.
 
 Firstly, let's load the model and visualise it in Rhino by runnning this script:
 ```python
@@ -98,7 +98,7 @@ The next step is to integrate the parametric wall back into our BIM model. We ca
 script to read the parametric wall geometry from Rhino and insert it into the IFC model.
 ```
 
-Additionally, we can also add custom attributes to the parametric wall, such as the wall thickness, material information about our parametric bricks, etc. 
+Additionally, we can also add attributes and custom properties to the parametric wall, such as the wall thickness, material information about our parametric bricks, etc. 
 ```
 script adding attributes and properties to the parametric wall.
 ```
@@ -107,12 +107,15 @@ script adding attributes and properties to the parametric wall.
 ## Export the IFC model to a new IFC file
 The final step is to export the modified IFC model to a new IFC file.
 ```
-script to export the IFC model to a new IFC file.
+>>> model.save("simple_house_with_parametric_wall.ifc")
+...
 ```
 
 We can then open the new IFC file in the stand-alone viewer to examine the result.
 ```
-script to open the new IFC file in the stand-alone viewer.
+>>> from compas_ifc import IFCModel
+>>> model = IFCModel.from_file("simple_house_with_parametric_wall.ifc")
+>>> model.show()
 ```
 
 ## Full automation
