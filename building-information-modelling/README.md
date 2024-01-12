@@ -9,7 +9,7 @@ Creating custom computational workflows for BIM can be challenging, because most
 
 This tutorial will give an example of using COMPAS to load a BIM model of a simple house, replace its wall with a parametric one generated with Rhino Grasshopper and then export again as a valid IFC file.
 
-(IMAGE PREVIEW OF THE FINAL MODEL)
+![intro](intro.png)
 
 ## Setup
 
