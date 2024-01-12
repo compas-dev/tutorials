@@ -2,10 +2,10 @@
 
 > **WARNING:** COMPAS IFC is currently being upgraded to support COMPAS 2.0.
 > This upgrade is scheduled to be completed by the end of January 2024.
-> This tutorial is the intended usage for COMPAS IFC with COMPAS 2.0.
+> Before the completion of upgrade, this tutorial serves as the INTENDED USAGE for COMPAS IFC with COMPAS 2.0.
 > If you wish to use COMPAS IFC at its current state, please refer to the [COMPAS IFC documentation](https://compas.dev/compas_ifc).
 
-Creating custom computational workflows for BIM can be challenging, because most commercial BIM applications are close-sourced and not designed to be extended. It is also not easy to perform data-exchange between BIM applications like Revit and CAD software such as Rhino or Analysis tools such as FEA softwares. COMPAS provides a set of tools for working with BIM data in a transparent and interoperable way through IFC format, allowing users to programatically extract information, perform analysis on, modify or create BIM models in multiple plaforms.
+Creating custom computational workflows for BIM can be challenging, because most commercial BIM applications are close-sourced and not designed to be extended. It is also not easy to perform data-exchange between BIM applications like Revit and CAD softwares such as Rhino or Analysis tools like FEA softwares. COMPAS provides a set of tools for working with BIM data in a transparent and interoperable way through IFC format, allowing users to programatically extract information, perform analysis on, modify and create BIM models in a unified manner across multiple plaforms.
 
 This tutorial will give an example of using COMPAS to load a BIM model of a simple house, replace its wall with a parametric one with custom metadata and then export again as a valid IFC file.
 
@@ -13,9 +13,9 @@ This tutorial will give an example of using COMPAS to load a BIM model of a simp
 
 ## Setup
 
-Create a new environment with BIM related packages in COMPAS ecosystem. Where `bim` is the name of the environment. `compas_ifc` is a package for reading and writing IFC files, a widely used digital format for BIM applications. `compas_viewer` is a package for creating custom viewers.
+Create a new environment with BIM related packages in COMPAS ecosystem. Where `bim` is the name of the environment, `compas` is the COMPAS core library, `compas_ifc` is a package for interacting IFC files, a widely used digital format for BIM applications, and `compas_viewer` is a package of COMPAS's stand-alone viewer.
 ```bash
-conda create -n bim compas_ifc compas_occ compas_viewer
+conda create -n bim compas compas_ifc compas_viewer
 ```
 
 Alternatively, you can create the environment from the provided `environment.yml` file.
@@ -23,55 +23,41 @@ Alternatively, you can create the environment from the provided `environment.yml
 conda env create -f environment.yml
 ```
 
-Activate the environment and start the Python interpreter.
+Activate the environment install COMPAS packages to Rhino.
 ```bash
+conda activate bim
 python -m compas_rhino.install -v 8.0
 ```
 
-Activate the environment and start the Python interpreter.
+Open Python interperator and check the version of installed packages.
 ```bash
-conda activate bim
 python
-```
-
-Check the version installed packages.
-```bash
+>>> import compas
 >>> import compas_ifc
+>>> import compas_viewer
+>>> compas.__version__
+'2.0.0'
 >>> compas_ifc.__version__
 '1.0.0'
->>> import compas_viewer
->>> compas_ifc.__version__
-'2.0.1'
+>>> compas_viewer.__version__
+'1.0.0'
 ```
 
 ## Open IFC file of existing BIM model with stand-alone viewer
+IFC is a data-exchange format for BIM, it supported by most majority of BIM applications. We provide a [simple_house.ifc]() as the start point of this tutorial.
+
 The `compas_ifc` package provides a stand-alone viewer. It can be used conveniently to inspect IFC file contents.
 
-```bash
+```
 >>> from compas_ifc import IFCModel
->>> model = IFCModel.from_file('data/wall-with-opening-and-window.ifc')
+>>> model = IFCModel.from_file('simple_house.ifc')
 >>> model.summary()
-===============================================================================
-IFCModel summary
--------------------------------------------------------------------------------
-Filename: data/wall-with-opening-and-window.ifc
-File size: 0.5 MB
-Entity count: 123
-Project: "Wall with opening and window"
-Buildings: 1
 ...
-===============================================================================
 ```
 Print the spatial hierrachy of the model.
 ```
 >>> model.print_hierarchy()
-└── Default Project [IfcProject]
-    └── Default Site [IfcSite]
-        └── Default Building [IfcBuilding]
-            └── Default Building Storey [IfcBuildingStorey]
-                ├── Wall [IfcWall]
-                │   └── Wall Openning [IfcOpeningElement]
-                └── Window [IfcWindow]
+...
 ```
 Visualize the model in a viewer.
 ```
@@ -87,34 +73,32 @@ Firstly, let's load the model and visualise it in Rhino by runnning this script:
 from compas.scene import Scene
 from compas_ifc import IFCModel
 scene = Scene()
-model = IFCModel.from_file('data/wall-with-opening-and-window.ifc')
+model = IFCModel.from_file('simple_house.ifc')
 scene.add(model)
 scene.redraw()
 ```
 
 (IMAGE SHOWING THE IFC MODEL IN RHINO)
 
-Now with the model loaded into Rhino, we can use this [Grasshopper script]() to generate a parametric wall.
-
-But before that we need preprocess the existing IFC wall geometry a bit, to make it suitable as the Grasshoper script input.
+The next step is preprocess the wall geometry in Rhino, to make it suitable as the input geometry of our parametric wall.
 ```
-some script to simplify the wall geometry.
+script to simplify the wall geometry.
 ```
 
 (IMAGE OF SIMPLIFIED WALL GEOMETRY AS INPUT TO GRASSHOPPER SCRIPT)
 
-Now it's time to run the Grasshopper script to generate the parametric wall. We select the simplified wall geometry as the input to the Grasshopper script and bake the output.
+Now it's time to run our [Grasshopper script]() to generate the parametric wall. We select the simplified wall geometry as the input to the Grasshopper script and bake the output.
 
 (IMAGE PARAMETRIC WALL GENERATED BY GRASSHOPPER SCRIPT)
 
 ## Integrate custom geometry into the IFC model, with custom attributes
-The next step is to integrate the parametric wall into the IFC model. We can do this by using the `compas_ifc` package to read the parametric wall geometry from Rhino and then replace the existing wall geometry in the IFC model with the new one.
+The next step is to integrate the parametric wall back into our BIM model. We can do this by using the `compas_ifc` package to read the parametric wall geometry from Rhino and then replace the existing wall geometry in the IFC model with the newly generated one.
 
 ```
 script to read the parametric wall geometry from Rhino and insert it into the IFC model.
 ```
 
-Additionally, we can also add custom attributes to the parametric wall, such as the wall thickness, material, etc. 
+Additionally, we can also add custom attributes to the parametric wall, such as the wall thickness, material information about our parametric bricks, etc. 
 ```
 script adding attributes and properties to the parametric wall.
 ```
@@ -132,4 +116,4 @@ script to open the new IFC file in the stand-alone viewer.
 ```
 
 ## Full automation
-The whole process can be condensed into a single script, which can be run directly from the command line without any CAD software...
+The whole process can be condensed into a single script, which can be run directly from the command line without any CAD software. See [scripts/full_script.py]()
