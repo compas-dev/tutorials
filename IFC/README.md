@@ -137,8 +137,7 @@ You can also export a subset of entities to a new IFC file. While doing so, `com
 ---------------- <Window:IfcWindow Name: Window for Test Example, GlobalId: 0tA4DSHd50le6Ov9Yu0I9X>
 ```
 
-
-Create a new IFC file from scratch
+For more examples and detailed documentation of `compas_ifc` please refer to [compas_ifc repo](https://github.com/compas-dev/compas_ifc)
 
 ## Visualize the IFC file with COMPAS Viewer
 
@@ -252,4 +251,4 @@ viewer.show()
 This script is at [attribute_tree.py](attribute_tree.py).
 <img src="attribute_tree.png"/>
 
-
+For more examples and detailed documentation of `compas_viewer` please refer to [compas_ifc repo](https://github.com/compas-dev/compas_viewer)
