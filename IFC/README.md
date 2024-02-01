@@ -147,9 +147,9 @@ With COMPAS Viewer, you can easily visualize the IFC file in a few lines of code
 from compas_viewer import Viewer
 from compas_ifc.model import Model
 
-model = Model("data/wall-with-opening-and-window.ifc")
+model = Model("wall-with-opening-and-window.ifc")
 
-viewer = Viewer()
+viewer = Viewer(width=1200, height=600)
 
 for entity in model.get_entities_by_type("IfcBuildingElement"):
     print("Converting to brep:", entity)
@@ -158,7 +158,8 @@ for entity in model.get_entities_by_type("IfcBuildingElement"):
 
 viewer.show()
 ```
-<img src="viewer.png" alt="drawing" width="640"/>
+This script is at [viewer.py](viewer.py).
+<img src="viewer.png"/>
 
 With the Tree data structure in COMPAS, you can also create a spatial tree from the IFC file and visualize it in COMPAS Viewer.
 ```python
@@ -167,7 +168,7 @@ from compas_viewer.layout import Treeform
 from compas_ifc.model import Model
 from compas.datastructures import Tree, TreeNode
 
-model = Model("data/wall-with-opening-and-window.ifc")
+model = Model("wall-with-opening-and-window.ifc")
 
 
 spatial_tree = Tree()
@@ -187,7 +188,7 @@ add_entity_to_tree(model.project, root)
 spatial_tree.print_hierarchy()
 
 
-viewer = Viewer()
+viewer = Viewer(width=1200, height=600)
 
 for entity in model.get_entities_by_type("IfcBuildingElement"):
     viewer.add(entity.body_with_opening, name=entity.name)
@@ -197,7 +198,8 @@ viewer.layout.sidedock.add_element(Treeform(spatial_tree, {"Name": ".name"}))
 viewer.show()
 
 ```
-<img src="spatial_tree.png" alt="drawing" width="640"/>
+This script is at [spatial_tree.py](spatial_tree.py).
+<img src="spatial_tree.png"/>
 
 Same technique can be used to visualize the attributes of the entities in the IFC file.
 ```python
@@ -207,7 +209,7 @@ from compas_ifc.model import Model
 from compas_ifc.entities import Entity
 from compas.datastructures import Tree, TreeNode
 
-model = Model("data/wall-with-opening-and-window.ifc")
+model = Model("wall-with-opening-and-window.ifc")
 
 
 wall = model.get_entities_by_type("IfcWall")[0]
@@ -240,13 +242,14 @@ def add_attribute_to_tree(entity, parent_node, level=0):
 
 add_attribute_to_tree(wall, root)
 
-viewer = Viewer(width=800, height=600)
+viewer = Viewer(width=1200, height=600)
 viewer.add(wall.body_with_opening, name=wall.name)
 viewer.layout.sidedock.add_element(Treeform(attribute_tree, {"Name": ".name", "Value": ".attributes['value']"}))
 
 viewer.show()
 
 ```
-<img src="attribute_tree.png" alt="drawing" width="640"/>
+This script is at [attribute_tree.py](attribute_tree.py).
+<img src="attribute_tree.png"/>
 
 
