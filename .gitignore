@@ -2,3 +2,5 @@
 form-finding/__temp/
 
 form-finding/.DS_Store
+
+node_modules/

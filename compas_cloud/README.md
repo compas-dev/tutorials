@@ -83,9 +83,141 @@ For iterative calculations, it might be more efficient to keep all objects on th
 ```
 [[0.0, 0.0, 5.0], [1.0, 0.0, 5.0], [2.0, 0.0, 5.0], [3.0, 0.0, 5.0]]
 ```
-For examples please refer to the [compas_cloud documentation](https://compas.dev/compas_cloud).
+You can find the full script at [client.py](client.py).
+For more examples please refer to the [compas_cloud Repo](https://github.com/compas-dev/compas_cloud).
 
 ## Interact with the compas_cloud server using JavaScript
 
 Another common use case of compas_cloud is to use it as a backend for web applications. In this case, the client can be a web browser, or another server using different programming languages.
 
+For Javascript, we can use WebSocket API to connect to the compas_cloud server. The following example shows how to connect to the server and call a function on the server side. This example uses node.js, but it can also be used in a web browser in a very similar way. To run the example, first install the `ws` package.
+```bash
+npm install ws
+```
+This script is at [client.js](client.js).
+
+```javascript
+const WebSocket = require('ws');
+
+class Client {
+
+    constructor() {
+        this.ws = new WebSocket('ws://localhost:9009');
+        this.ws.on('error', console.error);
+        this.ws.on('open', () => {
+            console.log('connected');
+        });
+        this.ws.on('message', (data) => {
+            console.log('received: %s', data);
+            this.response = JSON.parse(String(data));
+        });
+    }
+
+    run(packageName, args = [], kwargs = {}, cache = false) {
+        this.response = null;
+        let data = {
+            package: packageName,
+            args,
+            kwargs,
+            cache
+        };
+        this.ws.send(JSON.stringify(data));
+    }
+
+}
+
+client = new Client();
+
+setTimeout(() => {
+    let points = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]];
+    let matrix4 = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 1.0], [0.0, 0.0, 0.0, 1.0]];
+
+    client.run('compas.geometry.transform_points', args = [points, matrix4]);
+
+    setTimeout(() => {
+        console.log(client.response);
+        client.ws.close();
+    }, 300);
+
+}, 300);
+```
+
+Running the above script will print the following result:
+```bash
+node client.js
+```
+```
+connected
+received: [[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [2.0, 0.0, 1.0], [3.0, 0.0, 1.0]]
+[ [ 0, 0, 1 ], [ 1, 0, 1 ], [ 2, 0, 1 ], [ 3, 0, 1 ] ]
+```
+
+We can also use Javascript's Async/Await syntax to properly wait for connection and responses, rather than using `setTimeout` to wait for a fixed amount of time. The updated script is at [client_async.js](client_async.js).
+
+```javascript
+const WebSocket = require('ws');
+
+class Client {
+
+    constructor() {
+        this.ws = null
+    }
+
+    async connect() {
+        this.ws = new WebSocket('ws://localhost:9009');
+        return new Promise((resolve, reject) => {
+            this.ws.on('open', () => {
+                console.log('connected');
+                resolve();
+            });
+            this.ws.on('error', (err) => {
+                reject(err);
+            });
+        });
+    }
+
+    async run(packageName, args = [], kwargs = {}, cache = false) {
+        this.response = null;
+        let data = {
+            package: packageName,
+            args,
+            kwargs,
+            cache
+        };
+        this.ws.send(JSON.stringify(data));
+
+        this.ws.removeAllListeners('message');
+        this.ws.removeAllListeners('error');
+
+        return new Promise((resolve, reject) => {
+            this.ws.on('message', (data) => {
+                console.log('received: %s', data);
+                this.response = JSON.parse(String(data));
+                resolve(this.response);
+            });
+
+            this.ws.on('error', (err) => {
+                reject(err);
+            });
+        });
+
+
+    }
+
+}
+
+async function main() {
+    let client = new Client();
+    await client.connect();
+
+    let points = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]];
+    let matrix4 = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 1.0], [0.0, 0.0, 0.0, 1.0]];
+
+    let response = await client.run('compas.geometry.transform_points', args = [points, matrix4]);
+    console.log(response);
+
+    client.ws.close()
+}
+
+main();
+```
