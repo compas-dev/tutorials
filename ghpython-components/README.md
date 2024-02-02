@@ -72,4 +72,4 @@ ipy componentizer\componentize.py components output
 
 After running this, we will find our component in the `output` folder, ready to be used! Just drag into into the Grasshopper canvas and start using it! 🚀
 
-![Grasshopper component](hello-world-component.png)
+![Grasshopper component](components.png)
