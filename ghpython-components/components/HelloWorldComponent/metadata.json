@@ -1,0 +1,27 @@
+{
+    "name": "Hello World component",
+    "nickname": "HelloWorld",
+    "description": "This is a minimal hello world example to create a new Grasshopper component",
+    "category": "Tutorials",
+    "subcategory": "Hello",
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "inputParameters": [
+            {
+                "name": "x"
+            },
+            {
+                "name": "y"
+            },
+            {
+                "name": "z"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "point"
+            }
+        ]
+    }
+}

@@ -8,7 +8,7 @@ This tutorial will give an example of using COMPAS to interact and visualize BIM
 
 Create a new conda environment called `bim` with `compas` and `compas_occ` installed.
 ```bash
-conda create -n bim compas compas_occ
+conda create -n bim -c conda-forge compas compas_occ
 ```
 
 Activate the environment, and install `compas_ifc` and `compas_viewer`.
