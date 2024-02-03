@@ -1,0 +1,9 @@
+name: compas-tutorials
+channels:
+    - conda-forge
+dependencies:
+    - pip
+    - compas >=2.0
+    - compas_occ
+    - pip:
+          - compas_notebook

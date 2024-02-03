@@ -90,10 +90,10 @@ class OrientedBoundingBoxInput(BaseModel):
 
 We then add the endpoint to compute the bounding box.
 ```python
-@app.post("/orinetated_bounding_box")
-async def obb(orinetated_bounding_box_input: OrientedBoundingBoxInput):
-    from compas.geometry import orinetated_bounding_box
-    return orinetated_bounding_box(input.points)
+@app.post("/oriented_bounding_box")
+async def obb(oriented_bounding_box_input: OrientedBoundingBoxInput):
+    from compas.geometry import oriented_bounding_box
+    return oriented_bounding_box(input.points)
 ```
 
 Full code of `server.py` is as follows:
@@ -133,7 +133,7 @@ python server.py
 
 We also update the python client to send a list of points to the server and print the vertices of the bounding box.
 ```python
-response = requests.post("http://localhost:8000/orinetated_bounding_box", json={"points": [[0,0,0], [1,0,0], [0,1,0], [0,0,1]]})
+response = requests.post("http://localhost:8000/oriented_bounding_box", json={"points": [[0,0,0], [1,0,0], [0,1,0], [0,0,1]]})
 
 print(response.json())
 ```
