@@ -19,7 +19,7 @@ conda env create -f environment.yml
 
 ## Activate the environment in VS Code
 
-To activate the envinronment in VS Code, do <kbd>SHIFT</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd> (OSX) or <kbd>SHIFT</kbd> + <kbd>Ctrl</kbd> + <kbd>P</kbd> (Windows) and type "Python: Select Interpreter" in the Command Palette. Then choose `compas-tutorials` from the list of environments.
+To activate the envinronment in VS Code, do <kbd>SHIFT</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd> (OSX) or <kbd>SHIFT</kbd> + <kbd>Ctrl</kbd> + <kbd>P</kbd> (Windows) and type "Python: Select Interpreter" in the Command Palette. Then choose `brep-booleans-vscode` from the list of environments.
 
 ## Boolean Operations + Visualisation
 

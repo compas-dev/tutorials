@@ -1,4 +1,4 @@
-name: compas-tutorials
+name: brep-booleans-vscode
 channels:
     - conda-forge
 dependencies:
