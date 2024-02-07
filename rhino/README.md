@@ -1,27 +1,22 @@
 # Introduction
 
-Rhino supports two editors: IronPython and CPython. The following tutorials explain how to install and use compas on both.
+# Installation Rhino 7 IronPython Editor
 
-# Installation - Editor: IronPython
-
-- **Step 1:** Install Anaconda: https://www.anaconda.com/products/distribution
-
-- **Step 2:** Anaconda Prompt commands:
+- **Step 1:** Anaconda Prompt commands: a) create a new conda environment named e.g. *compas-dev*, or any other name, and install compas, b) activate the environment, and c) install compas_rhino for Rhino 7:
 
     ```bash
-
     conda create -n compas-dev -c conda-forge compas
     conda activate compas-dev
-    python -m compas_rhino.install -v7.0
+    python -m compas_rhino.install -v 7.0
     ```
 
     ![Conda Environment](conda_environment.png)
 
-- **Step 3:** Open Rhino7 and in the command line type ```EditPythonScript```:
+- **Step 2:** Open Rhino 7 and in the command line type ```EditPythonScript```:
 
     ![edit_python_script](edit_python_script.png) 
 
-- **Step 4:** Use the following code to test, if compas is installed correctly:
+- **Step 3:** Use the following code to test, if compas is installed correctly:
 
     ```python
     import compas
@@ -30,42 +25,26 @@ Rhino supports two editors: IronPython and CPython. The following tutorials expl
 
     ![edit_python_script_version_check](edit_python_script_version_check.png)
 
-- **Notes:** If the latest compas version in development version is needed:
 
-  -  a) clone or pull the latest compas from GitHub
-  -  b) navigate to the compas folder
-  -  c) install it via pip
-  -  d) reference the folder in Rhino (on Windows, run Anaconda Prompt as administrator)
-  -  e) if the symlinks are not working properly, delete all of them from the default location on Windows ```..\AppData\Roaming\McNeel\Rhinoceros\7.0\scripts``` or on Mac ```\Library\Application Support\McNeel\Rhinoceros\7.0\scripts```:
+# Installation - Rhino 8 CPython Editor
 
-
-    ```bash
-    conda activate compas-dev
-    git clone https://github.com/compas-dev/compas.git
-    cd compas
-    pip install -e .
-    python -m compas_rhino.install
-    ```
-
-
-# Installation - Editor: ScriptEditor
-
-
-- **Step 1:** Install Anaconda: https://www.anaconda.com/products/distribution
-
-- **Step 2:** Anaconda Prompt commands:
+- **Step 1:** Anaconda Prompt commands: a) create a new conda environment named e.g. *compas-dev*, or any other name, and install compas, b) activate the environment, and c) install compas_rhino for Rhino 8:
 
     ```bash
     conda create -n compas-dev -c conda-forge compas python=3.9
-    conda activate compas-dev
-    %USERPROFILE%/.rhinocode/py39-rh8/python.exe -m pip install -e .
+    conda activate compas-dev¨
+    directory_of_rhinocode -m pip install compas
     ```
 
-- **Step 3:** Open Rhino8 ```ScriptEditor``` in the command line:
+The *directory_of_rhinocode* of Rhino 8 CPython in Windows and Mac OS:
+**WINDOWS** C:/Users/my_user_name/.rhinocode/py39-rh8/python.exe
+**MAC** ~/.rhinocode/py39-rh8/python3.9
+
+- **Step 2:** Open Rhino8 ```ScriptEditor``` in the command line:
 
     ![script_editor](script_editor.png) 
 
-- **Step 4:** Use the following code to test, if compas is installed correctly:
+- **Step 3:** Use the following code to test, if compas is installed correctly:
 
     ```python
     import compas
@@ -73,23 +52,6 @@ Rhino supports two editors: IronPython and CPython. The following tutorials expl
     ```
 
     ![script_editor_version_check](script_editor_version_check.png)
-
-- **Notes:** If the latest compas version in development version is needed:
-
-  -  a) clone or pull the latest compas from GitHub
-  -  b) navigate to the compas folder
-  -  c) install it via pip
-  -  d) reference the folder in Rhino (on Windows, run Anaconda Prompt as administrator)
-  -  e) if the symlinks are not working properly, delete all of them from the default location ```~/.rhinocode/py39-rh8/python3.9```:
-
-
-    ```bash
-    conda activate compas-dev
-    git clone https://github.com/compas-dev/compas.git
-    cd compas
-    pip install -e .
-    C:/Users/petrasv/.rhinocode/py39-rh8/python.exe -m pip install -e .
-    ```
 
 
 ## Load geometry
