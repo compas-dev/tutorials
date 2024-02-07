@@ -37,7 +37,9 @@
     ```
 
 The *directory_of_rhinocode* of Rhino 8 CPython in Windows and Mac OS:
+
 **WINDOWS** C:/Users/my_user_name/.rhinocode/py39-rh8/python.exe
+
 **MAC** ~/.rhinocode/py39-rh8/python3.9
 
 - **Step 2:** Open Rhino8 ```ScriptEditor``` in the command line:
